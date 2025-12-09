@@ -4,6 +4,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../specialists/presentation/providers/specialist_providers.dart';
+import 'session_resources_screen.dart';
 
 class BookedHistoryScreen extends ConsumerWidget {
   const BookedHistoryScreen({super.key});
@@ -252,6 +253,34 @@ class BookedHistoryScreen extends ConsumerWidget {
                       ),
                     ),
                   ],
+                ),
+              ] else ...[
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SessionResourcesScreen(
+                            specialistName: specialist.name,
+                            appointment: appointment,
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(IconlyBold.document, size: 18),
+                    label: const Text('View Resources'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.medicalBlue,
+                      side: const BorderSide(color: AppColors.medicalBlue),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                  ),
                 ),
               ],
             ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../providers/dashboard_providers.dart';
 import '../widgets/quick_action_card.dart';
@@ -12,6 +13,7 @@ import '../widgets/weekly_mood_chart.dart';
 import '../../../settings/presentation/screens/settings_screen.dart';
 import '../../../specialists/presentation/screens/specialists_screen.dart';
 import '../../../booking/presentation/screens/booking_screen.dart';
+import '../../../forum/presentation/screens/forum_home_screen.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
@@ -73,7 +75,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
               _buildHomeTab(context, userData, weeklyProgress, monthlyStats),
               const SpecialistsScreen(), // Specialists listing
               const BookingScreen(), // Booking screen from FAB
-              _buildPlaceholderTab('Forum', IconlyBold.chat),
+              const ForumHomeScreen(), // Forum screen
               const SettingsScreen(), // Settings screen
             ],
           ),
@@ -459,6 +461,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
 
                   const SizedBox(height: 24),
 
+                  _buildJoinSessionCard(context),
+
+                  const SizedBox(height: 24),
+
                   // Weekly Mood Chart
                   WeeklyMoodChart(
                     moodScores: weeklyProgress.moodScores,
@@ -499,7 +505,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                         title: 'Assessment',
                         icon: IconlyBold.paper,
                         color: AppColors.medicalBlue,
-                        onTap: () {},
+                        onTap: () => context.push('/assessment'),
                       ),
                       QuickActionCard(
                         title: 'Book Session',
@@ -694,5 +700,83 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
     if (hour < 12) return 'Good Morning';
     if (hour < 17) return 'Good Afternoon';
     return 'Good Evening';
+  }
+
+  Widget _buildJoinSessionCard(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [AppColors.medicalBlue, Color(0xFF1976D2)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.medicalBlue.withOpacity(0.3),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(IconlyBold.video, color: Colors.white, size: 24),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Upcoming Session',
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Dr. Sarah Smith',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Starts in 10 mins',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.9),
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () => context.push('/session/pre-check/session_123'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: AppColors.medicalBlue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            ),
+            child: const Text('Join'),
+          ),
+        ],
+      ),
+    );
   }
 }
