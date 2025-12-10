@@ -106,10 +106,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                         index: activeIndex,
                         children: [
                           _buildHomeTab(context, userData, weeklyProgress, monthlyStats),
-                          const SpecialistsScreen(), // Specialists listing
-                          const BookingScreen(), // Booking screen from FAB
-                          _buildPlaceholderTab('Forum', IconlyBold.chat),
-                          const SettingsScreen(), // Settings screen
+                          const SpecialistsScreen(), // Index 1: Specialists
+                          _buildPlaceholderTab('Forum', IconlyBold.chat), // Index 2: Forum
+                          const SettingsScreen(), // Index 3: Settings
                         ],
                       ),
                     );
@@ -163,8 +162,13 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                       _fabAnimationController.reverse().then((_) {
                         _fabAnimationController.forward();
                       });
-                      // Navigate to specialists screen (index 1)
-                      ref.read(dashboardIndexProvider.notifier).state = 1;
+                      // Navigate to booking screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const BookingScreen(),
+                        ),
+                      );
                     },
                     customBorder: const CircleBorder(),
                     child: Column(
