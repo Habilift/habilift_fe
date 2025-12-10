@@ -11,6 +11,7 @@ class Appointment {
   final String type; // 'video', 'voice', 'text'
   final String status; // 'upcoming', 'completed', 'cancelled'
   final double price;
+  final String? notes;
 
   Appointment({
     required this.id,
@@ -20,6 +21,7 @@ class Appointment {
     required this.type,
     required this.status,
     required this.price,
+    this.notes,
   });
 }
 
@@ -344,6 +346,8 @@ final appointmentsProvider = StateProvider<List<Appointment>>((ref) {
       type: 'voice',
       status: 'completed',
       price: 6000,
+      notes:
+          'Patient showed signs of improvement. Recommended daily meditation.',
     ),
   ];
 });
