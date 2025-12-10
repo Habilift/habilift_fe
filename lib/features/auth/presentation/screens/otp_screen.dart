@@ -60,6 +60,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
     final routeExtra = GoRouterState.of(context).extra as Map<String, dynamic>?;
     final emailOrPhone = routeExtra?['emailOrPhone'] ?? 'your email';
     final isEmail = routeExtra?['isEmail'] ?? true;
+    final userType = routeExtra?['userType'] ?? 'individual';
     
     return Scaffold(
       backgroundColor: Colors.white,
@@ -125,7 +126,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                     await authRepo.verifyOtp(emailOrPhone, v);
                     
                     if (context.mounted) {
-                      context.push('/profile-setup');
+                      context.push('/profile-setup?userType=$userType');
                     }
                   } catch (e) {
                     errorController!.add(ErrorAnimationType.shake);
@@ -227,7 +228,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (currentText.length == 6) {
-                      context.push('/profile-setup');
+                      context.push('/profile-setup?userType=$userType');
                     } else {
                       errorController!.add(ErrorAnimationType.shake);
                     }

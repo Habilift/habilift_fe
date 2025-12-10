@@ -240,9 +240,9 @@ class SettingsScreen extends ConsumerWidget {
                           final authRepo = ref.read(authRepositoryProvider);
                           await authRepo.signOut();
                           
-                          // Navigate to login screen
+                          // Navigate to user type selection screen
                           if (context.mounted) {
-                            context.go('/login');
+                            context.go('/user-type');
                           }
                         } catch (e) {
                           // Show error message

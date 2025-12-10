@@ -24,6 +24,9 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get user type from query parameters
+    final userType = GoRouterState.of(context).uri.queryParameters['userType'] ?? 'individual';
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -157,6 +160,7 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                                 'age_range': formData['age_range'],
                                 'country': formData['country'],
                                 'preferred_language': formData['preferred_language'],
+                                'user_type': userType,  // Save the selected user type
                                 'goals': formData['goals'] ?? [],
                                 'updated_at': DateTime.now().toIso8601String(),
                               };

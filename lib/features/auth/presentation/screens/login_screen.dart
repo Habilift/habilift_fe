@@ -31,7 +31,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             Icons.arrow_back_ios_new,
             color: AppColors.textBlack,
           ),
-          onPressed: () => context.pop(),
+          onPressed: () => context.go('/user-type'),
         ),
       ),
       body: SafeArea(

@@ -21,7 +21,10 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   bool _isEmail = true;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Get user type from query parameters
+    final userType = GoRouterState.of(context).uri.queryParameters['userType'] ?? 'individual';
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -32,7 +35,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             Icons.arrow_back_ios_new,
             color: AppColors.textBlack,
           ),
-          onPressed: () => context.pop(),
+          onPressed: () => context.go('/user-type'),
         ),
       ),
       body: SafeArea(
@@ -256,10 +259,11 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                                 // Send OTP to email for verification
                                 await authRepo.sendEmailOTP(formData['email']);
                                 
-                                // Navigate to OTP screen with email
+                                // Navigate to OTP screen with email and userType
                                 context.push('/otp', extra: {
                                   'emailOrPhone': formData['email'],
                                   'isEmail': true,
+                                  'userType': userType,
                                 });
                               } else {
                                 // Send OTP to phone
@@ -267,10 +271,11 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                                   formData['phone'],
                                 );
                                 
-                                // Navigate to OTP screen with phone
+                                // Navigate to OTP screen with phone and userType
                                 context.push('/otp', extra: {
                                   'emailOrPhone': formData['phone'],
                                   'isEmail': false,
+                                  'userType': userType,
                                 });
                               }
                             } catch (e) {
