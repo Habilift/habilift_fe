@@ -42,41 +42,44 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
 
   @override
   Widget build(BuildContext context) {
-    final userData = ref.watch(userDataProvider);
-    final weeklyProgress = ref.watch(weeklyProgressProvider);
-    final monthlyStats = ref.watch(monthlyStatsProvider);
+    final userDataAsync = ref.watch(userDataProvider);
+    final weeklyProgressAsync = ref.watch(weeklyProgressProvider);
+    final monthlyStatsAsync = ref.watch(monthlyStatsProvider);
     final activeIndex = ref.watch(dashboardIndexProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.medicalGreen,
-      body: SafeArea(
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 400),
-          switchInCurve: Curves.easeInOut,
-          switchOutCurve: Curves.easeInOut,
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return FadeTransition(
-              opacity: animation,
-              child: SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0.1, 0),
-                  end: Offset.zero,
-                ).animate(animation),
-                child: child,
-              ),
-            );
-          },
-          child: IndexedStack(
-            key: ValueKey<int>(activeIndex),
-            index: activeIndex,
-            children: [
-              _buildHomeTab(context, userData, weeklyProgress, monthlyStats),
-              const SpecialistsScreen(), // Specialists listing
-              const BookingScreen(), // Booking screen from FAB
-              _buildPlaceholderTab('Forum', IconlyBold.chat),
-              const SettingsScreen(), // Settings screen
-            ],
-          ),
+      backgroundColor: AppColors.surfaceGray,
+      body: userDataAsync.when(
+        data: (userData) {
+          return weeklyProgressAsync.when(
+            data: (weeklyProgress) {
+              return monthlyStatsAsync.when(
+                data: (monthlyStats) {
+                  return IndexedStack(
+                    index: activeIndex,
+                    children: [
+                      _buildHomeTab(context, userData, weeklyProgress, monthlyStats),
+                      const SpecialistsScreen(),
+                      _buildPlaceholderTab('Forum', IconlyBold.chat),
+                      const SettingsScreen(),
+                    ],
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stack) => Center(
+                  child: Text('Error loading stats: $error'),
+                ),
+              );
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stack) => Center(
+              child: Text('Error loading mood data: $error'),
+            ),
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(
+          child: Text('Error loading profile: $error'),
         ),
       ),
       floatingActionButton: _buildFloatingSpecialistButton(),
@@ -122,8 +125,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                       _fabAnimationController.reverse().then((_) {
                         _fabAnimationController.forward();
                       });
-                      // Navigate to booking screen (index 2)
-                      ref.read(dashboardIndexProvider.notifier).state = 2;
+                      // Navigate to specialists screen (index 1)
+                      ref.read(dashboardIndexProvider.notifier).state = 1;
                     },
                     customBorder: const CircleBorder(),
                     child: Column(
@@ -609,15 +612,15 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                 icon: IconlyLight.chat,
                 activeIcon: IconlyBold.chat,
                 label: 'Forum',
-                index: 3,
-                isActive: ref.watch(dashboardIndexProvider) == 3,
+                index: 2,
+                isActive: ref.watch(dashboardIndexProvider) == 2,
               ),
               _buildNavItem(
                 icon: IconlyLight.setting,
                 activeIcon: IconlyBold.setting,
                 label: 'Settings',
-                index: 4,
-                isActive: ref.watch(dashboardIndexProvider) == 4,
+                index: 3,
+                isActive: ref.watch(dashboardIndexProvider) == 3,
               ),
             ],
           ),

@@ -6,6 +6,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import '../../../../app/theme/app_colors.dart';
+import '../../providers/auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +17,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
+  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -124,11 +126,59 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState?.saveAndValidate() ??
-                              false) {
-                            // TODO: Implement login logic
-                            context.go('/dashboard');
+                        onPressed: () async {
+                          if (_formKey.currentState?.saveAndValidate() ?? false) {
+                            final formData = _formKey.currentState!.value;
+                            final authRepo = ref.read(authRepositoryProvider);
+                            
+                            // Validate email/phone and password are not null
+                            final emailOrPhone = formData['email_or_phone'] as String?;
+                            final password = formData['password'] as String?;
+                            
+                            if (emailOrPhone == null || emailOrPhone.isEmpty || password == null || password.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Please enter both email/phone and password'),
+                                  backgroundColor: AppColors.errorRed,
+                                ),
+                              );
+                              return;
+                            }
+                            
+                            try {
+                              // Show loading indicator
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) => const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                              
+                              // Authenticate user with Supabase
+                              await authRepo.signInWithEmail(emailOrPhone, password);
+                              
+                              // Close loading dialog
+                              if (context.mounted) {
+                                Navigator.of(context).pop();
+                                
+                                // Navigate to dashboard
+                                context.go('/dashboard');
+                              }
+                            } catch (e) {
+                              // Close loading dialog
+                              if (context.mounted) {
+                                Navigator.of(context).pop();
+                                
+                                // Show error message
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Login failed: ${e.toString()}'),
+                                    backgroundColor: AppColors.errorRed,
+                                  ),
+                                );
+                              }
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(

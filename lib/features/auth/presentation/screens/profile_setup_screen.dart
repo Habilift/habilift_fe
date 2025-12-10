@@ -6,6 +6,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import '../../../../app/theme/app_colors.dart';
+import '../../../home/presentation/providers/dashboard_providers.dart';
+
 
 class ProfileSetupScreen extends ConsumerStatefulWidget {
   const ProfileSetupScreen({super.key});
@@ -136,15 +138,47 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
                   Expanded(
                     flex: 2,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState?.saveAndValidate() ?? false) {
                           if (_currentStep < _steps.length - 1) {
                             setState(() {
                               _currentStep++;
                             });
                           } else {
-                            // Complete setup
-                            context.go('/dashboard');
+                            // Complete setup - Save to database
+                            final formData = _formKey.currentState!.value;
+                            final profileRepo = ref.read(profileRepositoryProvider);
+                            
+                            try {
+                              // Prepare profile data
+                              final profileUpdates = {
+                                'name': formData['full_name'],
+                                'gender': formData['gender'],
+                                'age_range': formData['age_range'],
+                                'country': formData['country'],
+                                'preferred_language': formData['preferred_language'],
+                                'goals': formData['goals'] ?? [],
+                                'updated_at': DateTime.now().toIso8601String(),
+                              };
+                              
+                              // Save to database
+                              await profileRepo.updateProfile(profileUpdates);
+                              
+                              // Navigate to dashboard
+                              if (context.mounted) {
+                                context.go('/dashboard');
+                              }
+                            } catch (e) {
+                              // Show error
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Error saving profile: $e'),
+                                    backgroundColor: AppColors.errorRed,
+                                  ),
+                                );
+                              }
+                            }
                           }
                         }
                       },
@@ -199,12 +233,12 @@ class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
             labelText: 'Gender',
             prefixIcon: Icon(IconlyLight.user2),
           ),
-          items: ['Male', 'Female', 'Non-binary', 'Prefer not to say']
-              .map(
-                (gender) =>
-                    DropdownMenuItem(value: gender, child: Text(gender)),
-              )
-              .toList(),
+          items: const [
+            DropdownMenuItem(value: 'male', child: Text('Male')),
+            DropdownMenuItem(value: 'female', child: Text('Female')),
+            DropdownMenuItem(value: 'non-binary', child: Text('Non-binary')),
+            DropdownMenuItem(value: 'prefer_not_to_say', child: Text('Prefer not to say')),
+          ],
           validator: FormBuilderValidators.required(),
         ),
       ],

@@ -5,7 +5,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../app/theme/app_colors.dart';
+import '../../providers/auth_provider.dart';
 
 class AuthScreen extends ConsumerStatefulWidget {
   const AuthScreen({super.key});
@@ -238,10 +240,45 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState?.saveAndValidate() ??
                               false) {
-                            context.push('/otp');
+                            final formData = _formKey.currentState!.value;
+                            final authRepo = ref.read(authRepositoryProvider);
+                            try {
+                              if (_isEmail) {
+                                // Sign up with email and password
+                                await authRepo.signUpWithEmail(
+                                  formData['email'],
+                                  formData['password'],
+                                );
+                                
+                                // Send OTP to email for verification
+                                await authRepo.sendEmailOTP(formData['email']);
+                                
+                                // Navigate to OTP screen with email
+                                context.push('/otp', extra: {
+                                  'emailOrPhone': formData['email'],
+                                  'isEmail': true,
+                                });
+                              } else {
+                                // Send OTP to phone
+                                await authRepo.signInWithOtp(
+                                  formData['phone'],
+                                );
+                                
+                                // Navigate to OTP screen with phone
+                                context.push('/otp', extra: {
+                                  'emailOrPhone': formData['phone'],
+                                  'isEmail': false,
+                                });
+                              }
+                            } catch (e) {
+                              // Handle error, e.g., show snackbar
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Error: $e')),
+                              );
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(

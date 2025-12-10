@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../app/theme/app_colors.dart';
+import '../../../auth/providers/auth_provider.dart';
+
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -205,8 +208,54 @@ class SettingsScreen extends ConsumerWidget {
                 child: SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // TODO: Implement logout
+                    onPressed: () async {
+                      // Show confirmation dialog
+                      final shouldLogout = await showDialog<bool>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Logout'),
+                          content: const Text('Are you sure you want to logout?'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: const Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () => Navigator.of(context).pop(true),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.errorRed,
+                              ),
+                              child: const Text('Logout'),
+                            ),
+                          ],
+                        ),
+                      );
+
+                      if (shouldLogout == true) {
+                        try {
+                          // Sign out using auth repository
+                          final authRepo = ref.read(authRepositoryProvider);
+                          await authRepo.signOut();
+                          
+                          // Navigate to login screen
+                          if (context.mounted) {
+                            context.go('/login');
+                          }
+                        } catch (e) {
+                          // Show error message
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Error logging out: $e'),
+                                backgroundColor: AppColors.errorRed,
+                              ),
+                            );
+                          }
+                        }
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.errorRed,

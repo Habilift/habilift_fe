@@ -53,18 +53,19 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                 },
                 itemCount: _contents.length,
                 itemBuilder: (context, index) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Image container - full width, no padding, no top space
-                      Container(
-                            height: MediaQuery.of(context).size.height * 0.52,
-                            width: double.infinity,
-                            constraints: BoxConstraints(
-                              maxHeight:
-                                  MediaQuery.of(context).size.height * 0.58,
-                              minHeight: 280,
-                            ),
+                  return SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Image container - full width, no padding, no top space
+                        Container(
+                              height: MediaQuery.of(context).size.height * 0.45,
+                              width: double.infinity,
+                              constraints: BoxConstraints(
+                                maxHeight:
+                                    MediaQuery.of(context).size.height * 0.50,
+                                minHeight: 250,
+                              ),
                             child: Stack(
                               children: [
                                 // Main image with cover fit
@@ -172,8 +173,9 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                                 .fadeIn(delay: 200.ms)
                                 .slideY(begin: 0.2, end: 0),
                       ),
-                      const SizedBox(height: 40),
-                    ],
+                      const SizedBox(height: 24),
+                      ],
+                    ),
                   );
                 },
               ),

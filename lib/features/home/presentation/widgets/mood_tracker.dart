@@ -1,40 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../app/theme/app_colors.dart';
+import '../providers/dashboard_providers.dart';
 
-class MoodTracker extends StatefulWidget {
+class MoodTracker extends ConsumerStatefulWidget {
   const MoodTracker({super.key});
 
   @override
-  State<MoodTracker> createState() => _MoodTrackerState();
+  ConsumerState<MoodTracker> createState() => _MoodTrackerState();
 }
 
-class _MoodTrackerState extends State<MoodTracker> {
+class _MoodTrackerState extends ConsumerState<MoodTracker> {
   String? _selectedMood;
   bool _showThankYou = false;
+  bool _isSaving = false;
 
-  final List<Map<String, dynamic>> _moods = [
-    {'emoji': '😊', 'label': 'Great', 'color': Colors.green},
-    {'emoji': '🙂', 'label': 'Good', 'color': AppColors.medicalGreen},
-    {'emoji': '😐', 'label': 'Okay', 'color': AppColors.warningOrange},
-    {'emoji': '😔', 'label': 'Bad', 'color': Colors.orange},
-    {'emoji': '😢', 'label': 'Awful', 'color': AppColors.errorRed},
+  static const List<Map<String, dynamic>> _moods = [
+    {'emoji': '😊', 'label': 'Great', 'color': Colors.green, 'score': 10},
+    {'emoji': '🙂', 'label': 'Good', 'color': Colors.green, 'score': 8},
+    {'emoji': '😐', 'label': 'Okay', 'color': Colors.orange, 'score': 6},
+    {'emoji': '😔', 'label': 'Bad', 'color': Colors.orange, 'score': 4},
+    {'emoji': '😢', 'label': 'Awful', 'color': Colors.red, 'score': 2},
   ];
 
-  void _selectMood(String mood) {
+  void _selectMood(String moodLabel, int moodScore) async {
+    if (_isSaving) return;
+
     setState(() {
-      _selectedMood = mood;
-      _showThankYou = true;
+      _selectedMood = moodLabel;
+      _isSaving = true;
     });
 
-    // Hide thank you message after 2 seconds
-    Future.delayed(const Duration(seconds: 2), () {
+    try {
+      // Save mood entry to database
+      final moodRepo = ref.read(moodRepositoryProvider);
+      await moodRepo.saveMoodEntry(
+        moodScore: moodScore,
+        moodLabel: moodLabel,
+      );
+
+      // Refresh weekly trend and user profile
+      ref.invalidate(weeklyMoodTrendProvider);
+      ref.invalidate(userProfileProvider);
+
+      setState(() {
+        _showThankYou = true;
+        _isSaving = false;
+      });
+
+      // Hide thank you message after 2 seconds
+      Future.delayed(const Duration(seconds: 2), () {
+        if (mounted) {
+          setState(() {
+            _showThankYou = false;
+          });
+        }
+      });
+    } catch (e) {
+      setState(() {
+        _isSaving = false;
+      });
+
       if (mounted) {
-        setState(() {
-          _showThankYou = false;
-        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error saving mood: $e'),
+            backgroundColor: AppColors.errorRed,
+          ),
+        );
       }
-    });
+    }
   }
 
   @override
@@ -93,8 +129,10 @@ class _MoodTrackerState extends State<MoodTracker> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: _moods.map((mood) {
               final isSelected = _selectedMood == mood['label'];
+              final moodScore = (mood['score'] ?? 5) as int;
+              final moodLabel = (mood['label'] ?? 'Unknown') as String;
               return GestureDetector(
-                    onTap: () => _selectMood(mood['label']),
+                    onTap: _isSaving ? null : () => _selectMood(moodLabel, moodScore),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
