@@ -52,33 +52,72 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
     return Scaffold(
       backgroundColor: AppColors.medicalGreen,
       body: SafeArea(
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 400),
-          switchInCurve: Curves.easeInOut,
-          switchOutCurve: Curves.easeInOut,
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return FadeTransition(
-              opacity: animation,
-              child: SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0.1, 0),
-                  end: Offset.zero,
-                ).animate(animation),
-                child: child,
+        child: userDataAsync.when(
+          loading: () => const Center(
+            child: CircularProgressIndicator(color: Colors.white),
+          ),
+          error: (error, stack) => Center(
+            child: Text(
+              'Error loading data: $error',
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+          data: (userData) {
+            return weeklyProgressAsync.when(
+              loading: () => const Center(
+                child: CircularProgressIndicator(color: Colors.white),
               ),
+              error: (error, stack) => Center(
+                child: Text(
+                  'Error loading progress: $error',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+              data: (weeklyProgress) {
+                return monthlyStatsAsync.when(
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(color: Colors.white),
+                  ),
+                  error: (error, stack) => Center(
+                    child: Text(
+                      'Error loading stats: $error',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  data: (monthlyStats) {
+                    return AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 400),
+                      switchInCurve: Curves.easeInOut,
+                      switchOutCurve: Curves.easeInOut,
+                      transitionBuilder: (Widget child, Animation<double> animation) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(0.1, 0),
+                              end: Offset.zero,
+                            ).animate(animation),
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: IndexedStack(
+                        key: ValueKey<int>(activeIndex),
+                        index: activeIndex,
+                        children: [
+                          _buildHomeTab(context, userData, weeklyProgress, monthlyStats),
+                          const SpecialistsScreen(), // Specialists listing
+                          const BookingScreen(), // Booking screen from FAB
+                          _buildPlaceholderTab('Forum', IconlyBold.chat),
+                          const SettingsScreen(), // Settings screen
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
             );
           },
-          child: IndexedStack(
-            key: ValueKey<int>(activeIndex),
-            index: activeIndex,
-            children: [
-              _buildHomeTab(context, userData, weeklyProgress, monthlyStats),
-              const SpecialistsScreen(), // Specialists listing
-              const BookingScreen(), // Booking screen from FAB
-              _buildPlaceholderTab('Forum', IconlyBold.chat),
-              const SettingsScreen(), // Settings screen
-            ],
-          ),
         ),
       ),
       floatingActionButton: _buildFloatingSpecialistButton(),
