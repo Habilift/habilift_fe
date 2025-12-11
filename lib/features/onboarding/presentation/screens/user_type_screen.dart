@@ -51,7 +51,7 @@ class UserTypeScreen extends ConsumerWidget {
                     'I am looking for mental health support or guidance.',
                 color: AppColors.medicalGreen,
                 delay: 400.ms,
-                onTap: () => context.push('/auth'),
+                onTap: () => context.push('/auth?userType=individual'),
               ),
               _UserTypeCard(
                 icon: IconlyBold.user3, // Specialist icon
@@ -60,7 +60,7 @@ class UserTypeScreen extends ConsumerWidget {
                     'I am a Psychologist, Psychiatrist, or Special Educator.',
                 color: AppColors.medicalBlue,
                 delay: 500.ms,
-                onTap: () => context.push('/auth'),
+                onTap: () => context.push('/auth?userType=specialist'),
               ),
               _UserTypeCard(
                 icon: IconlyBold.work, // Lay counsellor
@@ -68,7 +68,7 @@ class UserTypeScreen extends ConsumerWidget {
                 description: 'I am a community worker or lay counsellor.',
                 color: AppColors.warningOrange,
                 delay: 600.ms,
-                onTap: () => context.push('/auth'),
+                onTap: () => context.push('/auth?userType=educator'),
               ),
               _UserTypeCard(
                 icon: IconlyBold.user2, // Parent icon
@@ -76,7 +76,7 @@ class UserTypeScreen extends ConsumerWidget {
                 description: 'I am caring for a child with special needs.',
                 color: const Color(0xFF9C27B0), // Purple for parents
                 delay: 700.ms,
-                onTap: () => context.push('/auth'),
+                onTap: () => context.push('/auth?userType=parent'),
               ),
             ],
           ),

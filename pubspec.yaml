@@ -114,3 +114,131 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+name: habilift_final
+description: "HabiLift - Lifting Lives, Unlocking Potential. Mental health & inclusive education platform."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter                        
+
+  # State Management
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.3.5
+
+  # Navigation
+  go_router: any
+
+  # UI/UX & Animations
+  flutter_animate: any
+  lottie: any
+  rive: any
+  flutter_svg: any
+  cached_network_image: any
+  shimmer: any
+  fl_chart: any  # For KPI graphs and charts
+
+  # Typography & Icons
+  google_fonts: any
+  flutter_iconly: any
+  cupertino_icons: any
+
+  # Forms & Validation
+  flutter_form_builder: any
+  form_builder_validators: any
+  pin_code_fields: any
+
+  # Storage & Data
+  shared_preferences: any
+  hive: any
+  hive_flutter: any
+
+  # Networking
+  dio: any
+  connectivity_plus: any
+  supabase_flutter: ^2.5.8
+  flutter_dotenv: ^5.1.0
+
+  # Document & Sharing
+  pdf: any
+  printing: any
+  share_plus: any
+
+  # Utils
+  intl: any
+  uuid: any
+  equatable: any
+  freezed_annotation: any
+  json_annotation: any
+
+  # Permissions
+  permission_handler: any
+  camera: any
+  wakelock_plus: any
+  flutter_rating_bar: any
+  noise_meter: any
+  timeago: ^3.7.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: any
+  build_runner: ^2.4.9
+  riverpod_generator: ^2.4.0
+  freezed: ^2.5.2
+  json_serializable: ^6.8.0
+  mocktail: ^1.0.3
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+flutter:
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - .env
+    - assets/images/logo/logo.png
+    - assets/images/
+    - assets/icons/
+    - assets/profile/
+    - assets/images/onboardings/onboard1.png
+    - assets/images/onboardings/onboard2.png
+    - assets/images/onboardings/onboard3.png
+    - assets/images/onboardings/mission.png
+    - assets/book_hero/
+    - assets/video_screen_img/specialist.png 
+
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/to/resolution-aware-images
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package

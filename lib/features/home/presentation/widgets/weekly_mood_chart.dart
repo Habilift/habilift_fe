@@ -41,33 +41,65 @@ class WeeklyMoodChart extends StatelessWidget {
                   color: AppColors.textBlack,
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.medicalGreen.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.trending_up,
-                      size: 16,
-                      color: AppColors.medicalGreen,
+              // Calculate mood growth
+              Builder(
+                builder: (context) {
+                  // Calculate average for current week (last 7 days)
+                  final currentWeekScores = moodScores.where((score) => score > 0).toList();
+                  if (currentWeekScores.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  
+                  final currentAvg = currentWeekScores.reduce((a, b) => a + b) / currentWeekScores.length;
+                  
+                  // Calculate growth percentage (comparing to baseline of 5.0)
+                  // Or compare first half vs second half of week
+                  final firstHalf = moodScores.take(3).where((s) => s > 0).toList();
+                  final secondHalf = moodScores.skip(4).where((s) => s > 0).toList();
+                  
+                  double growthPercent = 0.0;
+                  bool isPositive = true;
+                  
+                  if (firstHalf.isNotEmpty && secondHalf.isNotEmpty) {
+                    final firstAvg = firstHalf.reduce((a, b) => a + b) / firstHalf.length;
+                    final secondAvg = secondHalf.reduce((a, b) => a + b) / secondHalf.length;
+                    growthPercent = ((secondAvg - firstAvg) / firstAvg * 100);
+                    isPositive = growthPercent >= 0;
+                  } else if (currentAvg > 0) {
+                    // Compare to baseline of 5.0 (middle of scale)
+                    growthPercent = ((currentAvg - 5.0) / 5.0 * 100);
+                    isPositive = growthPercent >= 0;
+                  }
+                  
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
                     ),
-                    const SizedBox(width: 4),
-                    Text(
-                      '+12%',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.medicalGreen,
-                      ),
+                    decoration: BoxDecoration(
+                      color: (isPositive ? AppColors.medicalGreen : AppColors.errorRed).withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                  ],
-                ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          isPositive ? Icons.trending_up : Icons.trending_down,
+                          size: 16,
+                          color: isPositive ? AppColors.medicalGreen : AppColors.errorRed,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${isPositive ? '+' : ''}${growthPercent.toStringAsFixed(1)}%',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: isPositive ? AppColors.medicalGreen : AppColors.errorRed,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),
