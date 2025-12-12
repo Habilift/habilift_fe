@@ -1,0 +1,228 @@
+lib/app/router.dart:42:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'package:go_router/go_router.dart';
+^^^^^^
+lib/app/router.dart:43:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/splash/presentation/screens/splash_screen.dart';
+^^^^^^
+lib/app/router.dart:44:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/onboarding/presentation/screens/welcome_screen.dart';
+^^^^^^
+lib/app/router.dart:45:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/onboarding/presentation/screens/user_type_screen.dart';
+^^^^^^
+lib/app/router.dart:46:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/onboarding/presentation/screens/mission_screen.dart';
+^^^^^^
+lib/app/router.dart:47:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/auth/presentation/screens/auth_screen.dart';
+^^^^^^
+lib/app/router.dart:48:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/auth/presentation/screens/login_screen.dart';
+^^^^^^
+lib/app/router.dart:49:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/auth/presentation/screens/otp_screen.dart';
+^^^^^^
+lib/app/router.dart:50:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/auth/presentation/screens/profile_setup_screen.dart';
+^^^^^^
+lib/app/router.dart:51:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/home/presentation/screens/dashboard_screen.dart';
+^^^^^^
+lib/app/router.dart:52:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/assessment/presentation/screens/assessment_intro_screen.dart';
+^^^^^^
+lib/app/router.dart:53:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/assessment/presentation/screens/assessment_question_screen.dart';
+^^^^^^
+lib/app/router.dart:54:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/assessment/presentation/screens/assessment_result_screen.dart';
+^^^^^^
+lib/app/router.dart:55:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/video_session/presentation/screens/pre_session_check_screen.dart';
+^^^^^^
+lib/app/router.dart:56:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/video_session/presentation/screens/active_session_screen.dart';
+^^^^^^
+lib/app/router.dart:57:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/video_session/presentation/screens/post_session_screen.dart';
+^^^^^^
+lib/app/router.dart:58:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/forum/presentation/screens/forum_home_screen.dart';
+^^^^^^
+lib/app/router.dart:59:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/forum/presentation/screens/category_threads_screen.dart';
+^^^^^^
+lib/app/router.dart:60:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/forum/presentation/screens/thread_detail_screen.dart';
+^^^^^^
+lib/app/router.dart:61:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../features/forum/presentation/screens/create_post_screen.dart';
+^^^^^^
+lib/app/theme/app_theme.dart:73:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'package:flutter/material.dart';
+^^^^^^
+lib/app/theme/app_theme.dart:74:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'app_colors.dart';
+^^^^^^
+lib/app/theme/app_theme.dart:75:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'app_typography.dart';
+^^^^^^
+lib/features/auth/presentation/screens/otp_screen.dart:255:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'package:flutter/material.dart';
+^^^^^^
+lib/features/auth/presentation/screens/otp_screen.dart:256:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+^^^^^^
+lib/features/auth/presentation/screens/otp_screen.dart:257:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'package:go_router/go_router.dart';
+^^^^^^
+lib/features/auth/presentation/screens/otp_screen.dart:258:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'package:flutter_animate/flutter_animate.dart';
+^^^^^^
+lib/features/auth/presentation/screens/otp_screen.dart:259:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'package:pin_code_fields/pin_code_fields.dart';
+^^^^^^
+lib/features/auth/presentation/screens/otp_screen.dart:260:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'dart:async';
+^^^^^^
+lib/features/auth/presentation/screens/otp_screen.dart:261:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../../../app/theme/app_colors.dart';
+^^^^^^
+lib/features/auth/presentation/screens/profile_setup_screen.dart:346:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'package:flutter/material.dart';
+^^^^^^
+lib/features/auth/presentation/screens/profile_setup_screen.dart:347:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+^^^^^^
+lib/features/auth/presentation/screens/profile_setup_screen.dart:348:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'package:go_router/go_router.dart';
+^^^^^^
+lib/features/auth/presentation/screens/profile_setup_screen.dart:349:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'package:flutter_animate/flutter_animate.dart';
+^^^^^^
+lib/features/auth/presentation/screens/profile_setup_screen.dart:350:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+^^^^^^
+lib/features/auth/presentation/screens/profile_setup_screen.dart:351:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'package:form_builder_validators/form_builder_validators.dart';
+^^^^^^
+lib/features/auth/presentation/screens/profile_setup_screen.dart:352:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import 'package:flutter_iconly/flutter_iconly.dart';
+^^^^^^
+lib/features/auth/presentation/screens/profile_setup_screen.dart:353:1: Error: Directives must appear before any declarations.
+Try moving the directive before any declarations.
+import '../../../../app/theme/app_colors.dart';
+^^^^^^
+lib/app/router.dart:63:7: Error: 'goRouter' is already declared in this scope.
+final goRouter = GoRouter(
+      ^^^^^^^^
+lib/app/router.dart:12:7: Context: Previous declaration of 'goRouter'.
+final goRouter = GoRouter(
+      ^^^^^^^^
+lib/app/theme/app_theme.dart:77:7: Error: 'AppTheme' is already declared in this scope.
+class AppTheme {
+      ^^^^^^^^
+lib/app/theme/app_theme.dart:8:7: Context: Previous declaration of 'AppTheme'.
+class AppTheme {
+      ^^^^^^^^
+lib/features/auth/presentation/screens/otp_screen.dart:263:7: Error: 'OtpScreen' is already declared in this scope.
+class OtpScreen extends ConsumerStatefulWidget {
+      ^^^^^^^^^
+lib/features/auth/presentation/screens/otp_screen.dart:10:7: Context: Previous declaration of 'OtpScreen'.
+class OtpScreen extends ConsumerStatefulWidget {
+      ^^^^^^^^^
+lib/features/auth/presentation/screens/otp_screen.dart:270:7: Error: '_OtpScreenState' is already declared in this scope.
+class _OtpScreenState extends ConsumerState<OtpScreen> {
+      ^^^^^^^^^^^^^^^
+lib/features/auth/presentation/screens/otp_screen.dart:17:7: Context: Previous declaration of '_OtpScreenState'.
+class _OtpScreenState extends ConsumerState<OtpScreen> {
+      ^^^^^^^^^^^^^^^
+lib/features/auth/presentation/screens/profile_setup_screen.dart:355:7: Error: 'ProfileSetupScreen' is already declared in this scope.
+class ProfileSetupScreen extends ConsumerStatefulWidget {
+      ^^^^^^^^^^^^^^^^^^
+lib/features/auth/presentation/screens/profile_setup_screen.dart:12:7: Context: Previous declaration of 'ProfileSetupScreen'.
+class ProfileSetupScreen extends ConsumerStatefulWidget {
+      ^^^^^^^^^^^^^^^^^^
+lib/features/auth/presentation/screens/profile_setup_screen.dart:362:7: Error: '_ProfileSetupScreenState' is already declared in this scope.
+class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
+      ^^^^^^^^^^^^^^^^^^^^^^^^
+lib/features/auth/presentation/screens/profile_setup_screen.dart:19:7: Context: Previous declaration of '_ProfileSetupScreenState'.
+class _ProfileSetupScreenState extends ConsumerState<ProfileSetupScreen> {
+      ^^^^^^^^^^^^^^^^^^^^^^^^
+lib/features/auth/presentation/screens/profile_setup_screen.dart:153:58: Error: The getter 'profileRepositoryProvider' isn't defined for the type '_ProfileSetupScreenState'.
+ - '_ProfileSetupScreenState' is from 'package:habilift_final/features/auth/presentation/screens/profile_setup_screen.dart' ('lib/features/auth/presentation/screens/profile_setup_screen.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'profileRepositoryProvider'.
+                            final profileRepo = ref.read(profileRepositoryProvider);
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+lib/features/home/presentation/widgets/mood_tracker.dart:37:33: Error: The getter 'moodRepositoryProvider' isn't defined for the type '_MoodTrackerState'.
+ - '_MoodTrackerState' is from 'package:habilift_final/features/home/presentation/widgets/mood_tracker.dart' ('lib/features/home/presentation/widgets/mood_tracker.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'moodRepositoryProvider'.
+      final moodRepo = ref.read(moodRepositoryProvider);
+                                ^^^^^^^^^^^^^^^^^^^^^^
+lib/features/home/presentation/widgets/mood_tracker.dart:44:22: Error: The getter 'weeklyMoodTrendProvider' isn't defined for the type '_MoodTrackerState'.
+ - '_MoodTrackerState' is from 'package:habilift_final/features/home/presentation/widgets/mood_tracker.dart' ('lib/features/home/presentation/widgets/mood_tracker.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'weeklyMoodTrendProvider'.
+      ref.invalidate(weeklyMoodTrendProvider);
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+lib/features/home/presentation/widgets/mood_tracker.dart:45:22: Error: The getter 'userProfileProvider' isn't defined for the type '_MoodTrackerState'.
+ - '_MoodTrackerState' is from 'package:habilift_final/features/home/presentation/widgets/mood_tracker.dart' ('lib/features/home/presentation/widgets/mood_tracker.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'userProfileProvider'.
+      ref.invalidate(userProfileProvider);
+                     ^^^^^^^^^^^^^^^^^^^
+Unhandled exception:
+Unsupported operation: Unsupported invalid type InvalidType(<invalid>) (InvalidType). Encountered while compiling file:///home/hack237/Documents/Habilift-Mobile-App/lib/features/auth/presentation/screens/profile_setup_screen.dart, which contains the type: FunctionType(ConsumerState<<invalid>> Function()).
+#0      LibraryCompiler._typeCompilationError (package:dev_compiler/src/kernel/compiler_new.dart:4479)
+#1      LibraryCompiler._emitType (package:dev_compiler/src/kernel/compiler_new.dart:4444)
+#2      LibraryCompiler._emitClassSignature (package:dev_compiler/src/kernel/compiler_new.dart:2259)
+#3      LibraryCompiler._emitClassDeclaration (package:dev_compiler/src/kernel/compiler_new.dart:1552)
+#4      LibraryCompiler._emitClass (package:dev_compiler/src/kernel/compiler_new.dart:1418)
+#5      List.forEach (dart:core-patch/growable_array.dart:428)
+#6      LibraryCompiler._emitLibrary (package:dev_compiler/src/kernel/compiler_new.dart:1340)
+#7      LibraryCompiler.emitLibrary (package:dev_compiler/src/kernel/compiler_new.dart:954)
+#8      LibraryBundleCompiler.emitModule (package:dev_compiler/src/kernel/compiler_new.dart:165)
+#9      IncrementalJavaScriptBundler.compile (package:frontend_server/src/javascript_bundle.dart:324)
+#10     FrontendCompiler.writeJavaScriptBundle (package:frontend_server/frontend_server.dart:909)
+<asynchronous suspension>
+#11     FrontendCompiler.compile (package:frontend_server/frontend_server.dart:715)
+<asynchronous suspension>
+#12     listenAndCompile.<anonymous closure> (package:frontend_server/frontend_server.dart:1436)
+<asynchronous suspension>
+The Dart compiler exited unexpectedly.
+Failed to compile application.

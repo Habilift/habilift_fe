@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../providers/dashboard_providers.dart';
 import '../widgets/quick_action_card.dart';
@@ -12,6 +13,7 @@ import '../widgets/weekly_mood_chart.dart';
 import '../../../settings/presentation/screens/settings_screen.dart';
 import '../../../specialists/presentation/screens/specialists_screen.dart';
 import '../../../booking/presentation/screens/booking_screen.dart';
+import '../../../forum/presentation/screens/forum_home_screen.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
@@ -42,41 +44,80 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
 
   @override
   Widget build(BuildContext context) {
-    final userData = ref.watch(userDataProvider);
-    final weeklyProgress = ref.watch(weeklyProgressProvider);
-    final monthlyStats = ref.watch(monthlyStatsProvider);
+    final userDataAsync = ref.watch(userDataProvider);
+    final weeklyProgressAsync = ref.watch(weeklyProgressProvider);
+    final monthlyStatsAsync = ref.watch(monthlyStatsProvider);
     final activeIndex = ref.watch(dashboardIndexProvider);
 
     return Scaffold(
       backgroundColor: AppColors.medicalGreen,
       body: SafeArea(
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 400),
-          switchInCurve: Curves.easeInOut,
-          switchOutCurve: Curves.easeInOut,
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return FadeTransition(
-              opacity: animation,
-              child: SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0.1, 0),
-                  end: Offset.zero,
-                ).animate(animation),
-                child: child,
+        child: userDataAsync.when(
+          loading: () => const Center(
+            child: CircularProgressIndicator(color: Colors.white),
+          ),
+          error: (error, stack) => Center(
+            child: Text(
+              'Error loading data: $error',
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+          data: (userData) {
+            return weeklyProgressAsync.when(
+              loading: () => const Center(
+                child: CircularProgressIndicator(color: Colors.white),
               ),
+              error: (error, stack) => Center(
+                child: Text(
+                  'Error loading progress: $error',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+              data: (weeklyProgress) {
+                return monthlyStatsAsync.when(
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(color: Colors.white),
+                  ),
+                  error: (error, stack) => Center(
+                    child: Text(
+                      'Error loading stats: $error',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  data: (monthlyStats) {
+                    return AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 400),
+                      switchInCurve: Curves.easeInOut,
+                      switchOutCurve: Curves.easeInOut,
+                      transitionBuilder: (Widget child, Animation<double> animation) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(0.1, 0),
+                              end: Offset.zero,
+                            ).animate(animation),
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: IndexedStack(
+                        key: ValueKey<int>(activeIndex),
+                        index: activeIndex,
+                        children: [
+                          _buildHomeTab(context, userData, weeklyProgress, monthlyStats),
+                          const SpecialistsScreen(), // Specialists listing
+                          const BookingScreen(), // Booking screen from FAB
+                          const ForumHomeScreen(), // Forum screen
+                          const SettingsScreen(), // Settings screen
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
             );
           },
-          child: IndexedStack(
-            key: ValueKey<int>(activeIndex),
-            index: activeIndex,
-            children: [
-              _buildHomeTab(context, userData, weeklyProgress, monthlyStats),
-              const SpecialistsScreen(), // Specialists listing
-              const BookingScreen(), // Booking screen from FAB
-              _buildPlaceholderTab('Forum', IconlyBold.chat),
-              const SettingsScreen(), // Settings screen
-            ],
-          ),
         ),
       ),
       floatingActionButton: _buildFloatingSpecialistButton(),
@@ -122,8 +163,13 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                       _fabAnimationController.reverse().then((_) {
                         _fabAnimationController.forward();
                       });
-                      // Navigate to booking screen (index 2)
-                      ref.read(dashboardIndexProvider.notifier).state = 2;
+                      // Navigate to booking screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const BookingScreen(),
+                        ),
+                      );
                     },
                     customBorder: const CircleBorder(),
                     child: Column(
@@ -459,6 +505,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
 
                   const SizedBox(height: 24),
 
+                  _buildJoinSessionCard(context),
+
+                  const SizedBox(height: 24),
+
                   // Weekly Mood Chart
                   WeeklyMoodChart(
                     moodScores: weeklyProgress.moodScores,
@@ -499,7 +549,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                         title: 'Assessment',
                         icon: IconlyBold.paper,
                         color: AppColors.medicalBlue,
-                        onTap: () {},
+                        onTap: () => context.push('/assessment'),
                       ),
                       QuickActionCard(
                         title: 'Book Session',
@@ -609,15 +659,15 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                 icon: IconlyLight.chat,
                 activeIcon: IconlyBold.chat,
                 label: 'Forum',
-                index: 3,
-                isActive: ref.watch(dashboardIndexProvider) == 3,
+                index: 2,
+                isActive: ref.watch(dashboardIndexProvider) == 2,
               ),
               _buildNavItem(
                 icon: IconlyLight.setting,
                 activeIcon: IconlyBold.setting,
                 label: 'Settings',
-                index: 4,
-                isActive: ref.watch(dashboardIndexProvider) == 4,
+                index: 3,
+                isActive: ref.watch(dashboardIndexProvider) == 3,
               ),
             ],
           ),
@@ -694,5 +744,83 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
     if (hour < 12) return 'Good Morning';
     if (hour < 17) return 'Good Afternoon';
     return 'Good Evening';
+  }
+
+  Widget _buildJoinSessionCard(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [AppColors.medicalBlue, Color(0xFF1976D2)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.medicalBlue.withOpacity(0.3),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(IconlyBold.video, color: Colors.white, size: 24),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Upcoming Session',
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Dr. Sarah Smith',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Starts in 10 mins',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.9),
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () => context.push('/session/pre-check/session_123'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: AppColors.medicalBlue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            ),
+            child: const Text('Join'),
+          ),
+        ],
+      ),
+    );
   }
 }
